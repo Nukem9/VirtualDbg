@@ -80,11 +80,8 @@ VOID HandleVmExit(PVIRT_CPU Cpu, PGUEST_REGS GuestRegs)
 	//
 	// Exit information
 	//
-	__vmx_vmread(VM_EXIT_REASON, &Cpu->ExitReason);
-	Cpu->ExitReason &= ~VMX_EXIT_REASONS_FAILED_VMENTRY;
-
-	SIZE_T instructionLen = 0;
-	__vmx_vmread(VM_EXIT_INSTRUCTION_LEN, &instructionLen);
+	Cpu->ExitReason			= __readvmx(VM_EXIT_REASON) & ~VMX_EXIT_REASONS_FAILED_VMENTRY;
+	size_t instructionLen	= __readvmx(VM_EXIT_INSTRUCTION_LEN);
 
 	VmExitCallbacks[Cpu->ExitReason](Cpu, (ULONG)instructionLen);
 

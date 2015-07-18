@@ -4,6 +4,7 @@
 
 struct DbgEventData
 {
+	bool Handled;
 	PVIRT_CPU Cpu;
 };
 

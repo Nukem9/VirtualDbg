@@ -3,8 +3,7 @@
 #include <intrin.h>
 #include "amd64.h"
 
-// nonstandard extension used : nameless struct/union
-#pragma warning(disable: 4201)
+#pragma warning(disable: 4201) // nonstandard extension used : nameless struct/union
 
 typedef struct _VIRT_CPU
 {

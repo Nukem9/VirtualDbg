@@ -92,8 +92,7 @@ NTSTATUS DbgSignalEvent(DbgEventData *Data)
 	KeSetEvent(&DbgConsumeEventSignal, HIGH_PRIORITY, TRUE);
 
 	// Wait for the other thread to respond, 
-	KeWaitForSingleObject(&DbgResponseEventSignal, Executive, KernelMode, FALSE, nullptr);
-	return STATUS_SUCCESS;
+	return KeWaitForSingleObject(&DbgResponseEventSignal, Executive, KernelMode, FALSE, nullptr);
 }
 
 VOID DbgInterceptContextSwap(ULONG_PTR CR3Value, PVIRT_CPU Cpu)
