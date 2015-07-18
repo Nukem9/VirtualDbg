@@ -32,7 +32,7 @@ VOID VmStart(PVOID StartContext)
 	KMUTEX mutex;
 
 	KeInitializeMutex(&mutex, 0);
-	KeWaitForSingleObject(&mutex, Executive, KernelMode, FALSE, NULL);
+	KeWaitForSingleObject(&mutex, Executive, KernelMode, FALSE, nullptr);
 
 	//
 	// Control area for saving states and VM information

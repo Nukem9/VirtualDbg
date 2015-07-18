@@ -1,7 +1,7 @@
 #include "Driver.h"
 
-#define WINNT_DEVICE_NAME L"\\Device\\VirtualDbgHide"
-#define MSDOS_DEVICE_NAME L"\\DosDevices\\VirtualDbgHide"
+#define WINNT_DEVICE_NAME L"\\Device\\VirtualDbg"
+#define MSDOS_DEVICE_NAME L"\\DosDevices\\VirtualDbg"
 
 UNICODE_STRING usDriverName;
 UNICODE_STRING usDosDeviceName;

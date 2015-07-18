@@ -9,6 +9,7 @@ struct DbgEventData
 };
 
 NTSTATUS DbgInit(ULONG ProcessId);
+NTSTATUS DbgClose();
 VOID DbgBeginWaitForEvent(DbgEventData **Data);
 VOID DbgEndWaitForEvent();
 NTSTATUS DbgSignalEvent(DbgEventData *Data);
