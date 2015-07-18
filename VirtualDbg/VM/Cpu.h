@@ -1,11 +1,19 @@
 #pragma once
 
+#include <intrin.h>
+#include "amd64.h"
+
+// nonstandard extension used : nameless struct/union
+#pragma warning(disable: 4201)
+
 typedef struct _VIRT_CPU
 {
 	PVOID				Self;			// Pointer to this structure
 
 	ULONG32				ProcessorId;	// Processor number
 	ULONG32				ThreadId;		// Thread number
+
+	BOOLEAN				DebuggerActive;	// TRUE if this CPU is being debugged
 
 	PVOID				VmxonVa;		// VMXON region virtual address
 	PHYSICAL_ADDRESS	VmxonPa;		// VMXON region physical address

@@ -68,32 +68,14 @@
     <ClInclude Include="NtKernel\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Debugger\Debugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="VM\ControlArea.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\Cpu.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\Misc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\VmExit.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\VmExitHandlers.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\VmInterrupt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\VTx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\Vm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Driver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -104,6 +86,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NtKernel\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger\Debugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\Cpu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\Misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\Vm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\VmExit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\VmExitHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\VmInterrupt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\VTx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\ControlArea.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,9 +1,5 @@
 #include "Pe.h"
 
-//
-// Special thanks: mrexodia
-// https://bitbucket.org/mrexodia/titanhide/src/f3b831ed988d29b5146d52e7b58a629344fc888a/TitanHide/pe.cpp
-//
 ULONG_PTR PeRvaToOffset(PIMAGE_NT_HEADERS NtHeaders, ULONG_PTR RVA, SIZE_T FileSize)
 {
 	PIMAGE_SECTION_HEADER sectionHeader = IMAGE_FIRST_SECTION(NtHeaders);

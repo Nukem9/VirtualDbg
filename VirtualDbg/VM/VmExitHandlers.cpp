@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "../Debugger/stdafx.h"
 
 NTSTATUS NTAPI HandleUnimplemented(PVIRT_CPU Cpu, ULONG InstructionLength)
 {
@@ -249,6 +250,9 @@ NTSTATUS NTAPI HandleCrAccess(PVIRT_CPU Cpu, ULONG InstructionLength)
 		case CR8:	Cpu->ExitIRQL = (KIRQL)reg;		break;
 		default:	__debugbreak();					break;
 		}
+
+		if (exitQualification->ControlRegister == CR3)
+			DbgInterceptContextSwap(reg, Cpu);
 	}
 	else if (exitQualification->AccessType == VMX_CONTROL_REG_ACCESS_TYPE_MOV_FROM_CR)
 	{

@@ -53,7 +53,7 @@ NTSTATUS FillGuestSelectorData(PVOID GdtBase, ULONG Segreg, USHORT Selector)
 	SEGMENT_SELECTOR SegmentSelector = { 0 };
 	ULONG uAccessRights;
 
-	InitializeSegmentSelector(&SegmentSelector, Selector, GdtBase);
+	InitializeSegmentSelector(&SegmentSelector, Selector, (PUCHAR)GdtBase);
 	uAccessRights = ((PUCHAR)& SegmentSelector.attributes)[0] + (((PUCHAR)&
 		SegmentSelector.attributes)[1] << 12);
 

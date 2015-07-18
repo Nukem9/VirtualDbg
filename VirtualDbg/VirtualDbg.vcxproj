@@ -51,20 +51,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Debugger\Debugger.cpp" />
     <ClCompile Include="IoControl.cpp" />
     <ClCompile Include="Misc\Pe.cpp" />
     <ClCompile Include="NtKernel\Utility.cpp" />
     <ClCompile Include="VM\ControlArea.c" />
-    <ClCompile Include="VM\Cpu.c" />
+    <ClCompile Include="VM\Cpu.cpp" />
     <ClCompile Include="Driver.cpp" />
-    <ClCompile Include="VM\Misc.c" />
-    <ClCompile Include="VM\Vm.c" />
-    <ClCompile Include="VM\VmExitHandlers.c" />
-    <ClCompile Include="VM\VmExit.c" />
-    <ClCompile Include="VM\VmInterrupt.c" />
-    <ClCompile Include="VM\VTx.c" />
+    <ClCompile Include="VM\Misc.cpp" />
+    <ClCompile Include="VM\Vm.cpp" />
+    <ClCompile Include="VM\VmExitHandlers.cpp" />
+    <ClCompile Include="VM\VmExit.cpp" />
+    <ClCompile Include="VM\VmInterrupt.cpp" />
+    <ClCompile Include="VM\VTx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Debugger\Debugger.h" />
+    <ClInclude Include="Debugger\stdafx.h" />
     <ClInclude Include="Misc\Pe.h" />
     <ClInclude Include="NtKernel\stdafx.h" />
     <ClInclude Include="NtKernel\Utility.h" />
