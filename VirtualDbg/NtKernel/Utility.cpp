@@ -7,7 +7,7 @@ ULONG_PTR GetNtoskrnlBase()
 	// Query the buffer size needed to list all modules
 	//
 	ULONG modulesSize	= 0;
-	NTSTATUS status		= AuxKlibQueryModuleInformation(&modulesSize, sizeof(AUX_MODULE_EXTENDED_INFO), NULL);
+	NTSTATUS status		= AuxKlibQueryModuleInformation(&modulesSize, sizeof(AUX_MODULE_EXTENDED_INFO), nullptr);
 
 	if (!NT_SUCCESS(status) || modulesSize == 0)
 		return 0;

@@ -15,6 +15,7 @@ KEVENT DbgConsumeEventSignal;
 KEVENT DbgResponseEventSignal;
 
 // Process parameters
+PEPROCESS TargetProcess;
 ULONG_PTR TargetUserCR3;	// Set value
 ULONG_PTR TargetUserEIP;	// Maximum value
 
@@ -28,27 +29,52 @@ NTSTATUS DbgInit(ULONG ProcessId)
 	KeInitializeEvent(&DbgResponseEventSignal, SynchronizationEvent, FALSE);	// Do auto-reset
 
 	// Query the process structure by ID
-	PEPROCESS targetProcess;
 	NTSTATUS status = STATUS_SUCCESS;
 
-	if (!NT_SUCCESS(status = PsLookupProcessByProcessId((HANDLE)ProcessId, &targetProcess)))
+	PEPROCESS localUserPrc = nullptr;
+	ULONG_PTR localUserCR3 = 0;
+	ULONG_PTR localUserEIP = (ULONG_PTR)MmHighestUserAddress;
+
+	if (!NT_SUCCESS(status = PsLookupProcessByProcessId((HANDLE)ProcessId, &localUserPrc)))
 		return status;
 
-	TargetUserCR3 = 0;
-	TargetUserEIP = (ULONG_PTR)MmHighestUserAddress;
+	// The system process isn't a valid target
+	if (localUserPrc == PsInitialSystemProcess)
+	{
+		ObDereferenceObject(localUserPrc);
+		return STATUS_INVALID_PARAMETER;
+	}
 
 	// EPROCESS::DirectoryBase is undocumented, but there is still an easy way to obtain it.
 	// Read CR3 directly after switching to the process' address space.
 	KAPC_STATE apcState;
 
-	KeStackAttachProcess(targetProcess, &apcState);
-	TargetUserCR3 = __readcr3();
+	KeStackAttachProcess(localUserPrc, &apcState);
+	localUserCR3 = __readcr3();
 	KeUnstackDetachProcess(&apcState);
 
 	// Validate
-	if (!TargetUserCR3 || !TargetUserEIP)
+	if (!localUserCR3 || !localUserEIP)
 		return STATUS_INVALID_PARAMETER;
 
+	InterlockedExchangePointer((volatile PVOID *)&TargetProcess, (PVOID)localUserPrc);
+	InterlockedExchangePointer((volatile PVOID *)&TargetUserCR3, (PVOID)localUserCR3);
+	InterlockedExchangePointer((volatile PVOID *)&TargetUserEIP, (PVOID)localUserEIP);
+	return STATUS_SUCCESS;
+}
+
+NTSTATUS DbgClose()
+{
+	if (!TargetProcess)
+		return STATUS_INVALID_DEVICE_STATE;
+
+	// Dereference object and return
+	ObDereferenceObject(TargetProcess);
+
+	// Invalidate all pointers
+	InterlockedExchangePointer((volatile PVOID *)&TargetProcess, nullptr);
+	InterlockedExchangePointer((volatile PVOID *)&TargetUserCR3, nullptr);
+	InterlockedExchangePointer((volatile PVOID *)&TargetUserEIP, nullptr);
 	return STATUS_SUCCESS;
 }
 
