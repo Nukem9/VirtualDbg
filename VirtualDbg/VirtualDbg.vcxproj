@@ -92,7 +92,7 @@
     <ClInclude Include="VM\VTx.h" />
   </ItemGroup>
   <ItemGroup>
-    <Inf Include="VirtualDbgHide.inf" />
+    <Inf Include="VirtualDbg.inf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BDA60A29-E3B4-4112-9620-5987690DE0F2}</ProjectGuid>
@@ -101,7 +101,7 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration>Win8.1 Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">Win32</Platform>
-    <RootNamespace>VirtualDbgHide</RootNamespace>
+    <RootNamespace>VirtualDbg</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win8.1 Debug|Win32'" Label="Configuration">

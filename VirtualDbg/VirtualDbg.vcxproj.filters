@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Inf Include="VirtualDbgHide.inf">
+    <Inf Include="VirtualDbg.inf">
       <Filter>Driver Files</Filter>
     </Inf>
   </ItemGroup>

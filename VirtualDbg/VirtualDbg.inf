@@ -1,5 +1,5 @@
 ;
-; VirtualDbgHide.inf
+; VirtualDbg.inf
 ;
 
 [Version]
@@ -7,7 +7,7 @@ Signature="$WINDOWS NT$"
 Class=Sample ; TODO: edit Class
 ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
 Provider=%ManufacturerName%
-CatalogFile=VirtualDbgHide.cat
+CatalogFile=VirtualDbg.cat
 DriverVer= ; TODO: set DriverVer in stampinf property pages
 
 [DestinationDirs]
@@ -26,7 +26,7 @@ HKR,,Icon,,-5
 1 = %DiskName%,,,""
 
 [SourceDisksFiles]
-VirtualDbgHide.sys  = 1,,
+VirtualDbg.sys  = 1,,
 
 ;*****************************************
 ; Install Section
@@ -36,25 +36,25 @@ VirtualDbgHide.sys  = 1,,
 %ManufacturerName%=Standard,NT$ARCH$
 
 [Standard.NT$ARCH$]
-%VirtualDbgHide.DeviceDesc%=VirtualDbgHide_Device, Root\VirtualDbgHide ; TODO: edit hw-id
+%VirtualDbg.DeviceDesc%=VirtualDbg_Device, Root\VirtualDbg ; TODO: edit hw-id
 
-[VirtualDbgHide_Device.NT]
+[VirtualDbg_Device.NT]
 CopyFiles=Drivers_Dir
 
 [Drivers_Dir]
-VirtualDbgHide.sys
+VirtualDbg.sys
 
 ;-------------- Service installation
-[VirtualDbgHide_Device.NT.Services]
-AddService = VirtualDbgHide,%SPSVCINST_ASSOCSERVICE%, VirtualDbgHide_Service_Inst
+[VirtualDbg_Device.NT.Services]
+AddService = VirtualDbg,%SPSVCINST_ASSOCSERVICE%, VirtualDbg_Service_Inst
 
 ; -------------- TestDriver driver install sections
-[VirtualDbgHide_Service_Inst]
-DisplayName    = %VirtualDbgHide.SVCDESC%
+[VirtualDbg_Service_Inst]
+DisplayName    = %VirtualDbg.SVCDESC%
 ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
 StartType      = 3               ; SERVICE_DEMAND_START
 ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %12%\VirtualDbgHide.sys
+ServiceBinary  = %12%\VirtualDbg.sys
 LoadOrderGroup = Extended Base
 
 ;
@@ -62,24 +62,24 @@ LoadOrderGroup = Extended Base
 ;
 
 [DestinationDirs]
-VirtualDbgHide_Device_CoInstaller_CopyFiles = 11
+VirtualDbg_Device_CoInstaller_CopyFiles = 11
 
-[VirtualDbgHide_Device.NT.CoInstallers]
-AddReg=VirtualDbgHide_Device_CoInstaller_AddReg
-CopyFiles=VirtualDbgHide_Device_CoInstaller_CopyFiles
+[VirtualDbg_Device.NT.CoInstallers]
+AddReg=VirtualDbg_Device_CoInstaller_AddReg
+CopyFiles=VirtualDbg_Device_CoInstaller_CopyFiles
 
-[VirtualDbgHide_Device_CoInstaller_AddReg]
+[VirtualDbg_Device_CoInstaller_AddReg]
 HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
 
-[VirtualDbgHide_Device_CoInstaller_CopyFiles]
+[VirtualDbg_Device_CoInstaller_CopyFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
 
 [SourceDisksFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
-[VirtualDbgHide_Device.NT.Wdf]
-KmdfService =  VirtualDbgHide, VirtualDbgHide_wdfsect
-[VirtualDbgHide_wdfsect]
+[VirtualDbg_Device.NT.Wdf]
+KmdfService =  VirtualDbg, VirtualDbg_wdfsect
+[VirtualDbg_wdfsect]
 KmdfLibraryVersion = $KMDFVERSION$
 
 [Strings]
@@ -87,5 +87,5 @@ SPSVCINST_ASSOCSERVICE= 0x00000002
 ManufacturerName="" ; TODO: add ManufacturerName
 ClassName="Samples" ; TODO: edit ClassName
 DiskName = "TestDriver Installation Disk"
-VirtualDbgHide.DeviceDesc = "TestDriver Device"
-VirtualDbgHide.SVCDESC = "TestDriver Service"
+VirtualDbg.DeviceDesc = "TestDriver Device"
+VirtualDbg.SVCDESC = "TestDriver Service"

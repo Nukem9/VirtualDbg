@@ -3,12 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualDbgHide", "VirtualDbgHide\VirtualDbgHide.vcxproj", "{BDA60A29-E3B4-4112-9620-5987690DE0F2}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualDbgHide Package", "VirtualDbgHide Package\VirtualDbgHide Package.vcxproj", "{A0338891-5CC0-4312-AD8D-298C83EAA9EB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BDA60A29-E3B4-4112-9620-5987690DE0F2} = {BDA60A29-E3B4-4112-9620-5987690DE0F2}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualDbg", "VirtualDbg\VirtualDbg.vcxproj", "{BDA60A29-E3B4-4112-9620-5987690DE0F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
