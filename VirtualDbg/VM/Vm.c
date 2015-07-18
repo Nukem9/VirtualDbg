@@ -50,16 +50,7 @@ VOID VmStart(PVOID StartContext)
 	//
 	DbgLog("Virtualizing %d processors...\n", KeNumberProcessors);
 
-	for (LONG i = 0; i < KeNumberProcessors; i++) 
-	{
-		KAFFINITY oldAffinity	= KeSetSystemAffinityThreadEx((KAFFINITY)(1 << i));
-		KIRQL oldIrql			= KeRaiseIrqlToDpcLevel();
-
-		_StartVirtualization();
-
-		KeLowerIrql(oldIrql);
-		KeRevertToUserAffinityThreadEx(oldAffinity);
-	}
+	KeIpiGenericCall(IpiStartVirtualization, 0);
 
 	DbgLog("Done\n");
 
@@ -77,6 +68,27 @@ CHAR VmIsActive()
 	}
 
 	return FALSE;
+}
+
+ULONG_PTR IpiStartVirtualization(ULONG_PTR Argument)
+{
+	UNREFERENCED_PARAMETER(Argument);
+
+	// IRQL must be DPC_LEVEL or higher
+	KIRQL irql = KeGetCurrentIrql();
+	
+	if (irql < DISPATCH_LEVEL)
+		KeRaiseIrqlToDpcLevel();
+
+	// Call assembler stub
+	_StartVirtualization();
+
+	// Restore original IRQL
+	if (irql < DISPATCH_LEVEL)
+		KeLowerIrql(irql);
+
+	// Return value ignored
+	return 0;
 }
 
 NTSTATUS StartVirtualization(PVOID GuestRsp)

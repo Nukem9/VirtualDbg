@@ -38,14 +38,6 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
 	//
 	IoCreateSymbolicLink(&usDosDeviceName, &usDriverName);
 
-	HANDLE thread;
-	status = PsCreateSystemThread(&thread, THREAD_ALL_ACCESS, NULL, NULL, NULL, VmStart, NULL);
-
-	if (!NT_SUCCESS(status))
-		return status;
-
-	ZwClose(thread);
-
 	return STATUS_SUCCESS;
 }
 
