@@ -1,2 +1,7 @@
-x64/Win7Release/
-VirtualDbg/x64/
+Win7Debug/*
+Win7Release/*
+x64/*
+
+VirtualDbg/Win7Debug/*
+VirtualDbg/Win7Release/*
+VirtualDbg/x64/*

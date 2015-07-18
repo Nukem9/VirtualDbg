@@ -238,13 +238,13 @@ VOID CpuSetupVMCS(PVIRT_CPU Cpu, PVOID GuestRsp)
 	__vmx_vmwrite(CR3_TARGET_VALUE3, 0);
 }
 
-extern ULONG64 GuestSyscallHandler;
+//extern ULONG64 GuestSyscallHandler;
 NTSTATUS Virtualize(PVIRT_CPU pCpu)
 {
 	DbgLog("CPU: 0x%p\n", pCpu);
 	DbgLog("RSP: 0x%p\n", _Rsp());
 
-	__writemsr(MSR_LSTAR, GuestSyscallHandler);
+	//__writemsr(MSR_LSTAR, GuestSyscallHandler);
 
 	switch (__vmx_vmlaunch())
 	{

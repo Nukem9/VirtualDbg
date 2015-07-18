@@ -53,14 +53,11 @@
   <ItemGroup>
     <ClCompile Include="IoControl.cpp" />
     <ClCompile Include="Misc\Pe.cpp" />
-    <ClCompile Include="Syscall\Nt.cpp" />
-    <ClCompile Include="Syscall\SSDT.cpp" />
-    <ClCompile Include="Syscall\Utility.cpp" />
+    <ClCompile Include="NtKernel\Utility.cpp" />
     <ClCompile Include="VM\ControlArea.c" />
     <ClCompile Include="VM\Cpu.c" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="VM\Misc.c" />
-    <ClCompile Include="Syscall\Hook.cpp" />
     <ClCompile Include="VM\Vm.c" />
     <ClCompile Include="VM\VmExitHandlers.c" />
     <ClCompile Include="VM\VmExit.c" />
@@ -69,10 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Misc\Pe.h" />
-    <ClInclude Include="Syscall\Nt.h" />
-    <ClInclude Include="Syscall\SSDT.h" />
-    <ClInclude Include="Syscall\stdafx.h" />
-    <ClInclude Include="Syscall\Utility.h" />
+    <ClInclude Include="NtKernel\stdafx.h" />
+    <ClInclude Include="NtKernel\Utility.h" />
     <ClInclude Include="VM\amd64.h" />
     <MASM Include="VM\amd64vm.asm">
       <FileType>CppHeader</FileType>
@@ -82,7 +77,6 @@
     <ClInclude Include="VM\Cpu.h" />
     <ClInclude Include="Driver.h" />
     <ClInclude Include="VM\Misc.h" />
-    <ClInclude Include="Syscall\Hook.h" />
     <ClInclude Include="VM\stdafx.h" />
     <ClInclude Include="VM\Vm.h" />
     <ClInclude Include="VM\VmExit.h" />
@@ -389,7 +383,6 @@
       <FileType>Document</FileType>
       <EnableMASM51Compatibility Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">false</EnableMASM51Compatibility>
     </MASM>
-    <MASM Include="Syscall\syscall64.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

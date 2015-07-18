@@ -56,25 +56,16 @@
     <ClInclude Include="VM\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Syscall\stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Syscall\Hook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VM\amd64vm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Syscall\SSDT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Syscall\Nt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Syscall\Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Misc\Pe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NtKernel\Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NtKernel\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -103,18 +94,6 @@
     <ClCompile Include="VM\Vm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Syscall\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Syscall\SSDT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Syscall\Nt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Syscall\Hook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Driver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -124,12 +103,12 @@
     <ClCompile Include="Misc\Pe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NtKernel\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="VM\amd64.asm">
-      <Filter>Source Files</Filter>
-    </MASM>
-    <MASM Include="Syscall\syscall64.asm">
       <Filter>Source Files</Filter>
     </MASM>
     <MASM Include="VM\amd64vm.asm">

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "../Syscall/Hook.h"
 
 NTSTATUS NTAPI HandleUnimplemented(PVIRT_CPU Cpu, ULONG InstructionLength)
 {
@@ -308,7 +307,7 @@ NTSTATUS NTAPI HandleMsrRead(PVIRT_CPU Cpu, ULONG InstructionLength)
 	case MSR_GS_BASE:			msr.QuadPart = __readvmx(GUEST_GS_BASE);		break;
 	case MSR_FS_BASE:			msr.QuadPart = __readvmx(GUEST_FS_BASE);		break;
 
-	case MSR_LSTAR:				msr.QuadPart = NtSyscallHandler;DbgPrint("PG LSTAR - 0x%p\n", Cpu->rip);break;
+	//case MSR_LSTAR:				msr.QuadPart = NtSyscallHandler;DbgPrint("PG LSTAR - 0x%p\n", Cpu->rip);break;
 
 	default:					msr.QuadPart = __readmsr(ecx);					break;
 	}
@@ -355,9 +354,11 @@ NTSTATUS NTAPI HandleMsrWrite(PVIRT_CPU Cpu, ULONG InstructionLength)
 		__vmx_vmwrite(GUEST_FS_BASE, msr.QuadPart);
 		break;
 
+	/*
 	case MSR_LSTAR:
 		// Ignore all writes
 		break;
+	*/
 
 	default:
 		__writemsr(ecx, msr.QuadPart);
