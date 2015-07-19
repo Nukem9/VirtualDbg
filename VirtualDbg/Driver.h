@@ -6,4 +6,5 @@
 extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath);
 extern "C" VOID DriverUnload(PDRIVER_OBJECT DriverObject);
 
+NTSTATUS DispatchDefault(PDEVICE_OBJECT DeviceObject, PIRP Irp);
 NTSTATUS DispatchIoControl(PDEVICE_OBJECT DeviceObject, PIRP Irp);

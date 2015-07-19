@@ -7,6 +7,8 @@ KSPIN_LOCK EventListLock;
 typedef struct
 {
 	SINGLE_LIST_ENTRY ListEntry;
+
+	volatile BOOLEAN *CompletionStatus;
 	DbgEventData *Data;
 } EVENTDATA_CONTAINER, *PEVENTDATA_CONTAINER;
 
@@ -22,6 +24,7 @@ ULONG_PTR TargetUserEIP;	// Maximum value
 NTSTATUS DbgInit(ULONG ProcessId)
 {
 	// Singly linked list spin-lock for debug data events
+	RtlSecureZeroMemory(&EventListHeader, sizeof(SINGLE_LIST_ENTRY));
 	KeInitializeSpinLock(&EventListLock);
 
 	// Initialize thread synchronization events
@@ -57,6 +60,14 @@ NTSTATUS DbgInit(ULONG ProcessId)
 	if (!localUserCR3 || !localUserEIP)
 		return STATUS_INVALID_PARAMETER;
 
+	// Debug prints
+	DbgPrint(
+		"Initialized VirtualDBG with:\n\tTarget PID: 0x%X\n\tTarget Prc: %p\n\tTarget CR3: %p\n\tTarget EIP: %p\n",
+		ProcessId,
+		localUserPrc,
+		localUserCR3,
+		localUserEIP);
+
 	InterlockedExchangePointer((volatile PVOID *)&TargetProcess, (PVOID)localUserPrc);
 	InterlockedExchangePointer((volatile PVOID *)&TargetUserCR3, (PVOID)localUserCR3);
 	InterlockedExchangePointer((volatile PVOID *)&TargetUserEIP, (PVOID)localUserEIP);
@@ -78,47 +89,73 @@ NTSTATUS DbgClose()
 	return STATUS_SUCCESS;
 }
 
-VOID DbgBeginWaitForEvent(DbgEventData **Data)
+BOOLEAN DbgWaitForEvent(DbgEventData **Data, volatile BOOLEAN **CompletionStatus)
 {
-	// Waits for a event that caused a VM exit, signaled by an
-	// event at DISPTACH_LEVEL on the other thread
-	KeWaitForSingleObject(&DbgConsumeEventSignal, UserRequest, KernelMode, TRUE, nullptr);
-
 	// Barrier around event data being changed
 	PSINGLE_LIST_ENTRY listEntry = ExInterlockedPopEntryList(&EventListHeader, &EventListLock);
 
-	// Capture internal buffer
-	*Data = (DbgEventData *)CONTAINING_RECORD(listEntry, EVENTDATA_CONTAINER, ListEntry);
+	// Returned value will be null if there is nothing in the list
+	if (!listEntry)
+		return FALSE;
 
-	// Free list slot
-	ExFreePoolWithTag(listEntry, 'DBGE');
+	// Capture internal buffer
+	auto container = (PEVENTDATA_CONTAINER)CONTAINING_RECORD(listEntry, EVENTDATA_CONTAINER, ListEntry);
+
+	*Data				= container->Data;
+	*CompletionStatus	= container->CompletionStatus;
+
+	// Free list entry
+	ExFreePoolWithTag(container, 'DBGE');
+	return TRUE;
 }
 
-VOID DbgEndWaitForEvent()
+VOID DbgCompleteEvent(volatile BOOLEAN *CompletionStatus)
 {
-	// There's no longer a debug event to be used
-	KeClearEvent(&DbgConsumeEventSignal);
+	// There's no longer a debug event to be used.
+	//
+	// However, ExInterlockedPopEntryList already "removed"
+	// the event from the list
 
 	// Tell the VM thread to resume
-	KeSetEvent(&DbgResponseEventSignal, HIGH_PRIORITY, FALSE);
+	*CompletionStatus = TRUE;
 }
 
 NTSTATUS DbgSignalEvent(DbgEventData *Data)
 {
+	// Event completion signal variable set from the other thread
+	volatile BOOLEAN eventCompleted = FALSE;
+
 	// Using a stack variable across threads is OK because it will not
 	// be touched until the event is signaled. It will not be paged due
 	// to DISPATCH_LEVEL Irql.
 	auto container = (PEVENTDATA_CONTAINER)ExAllocatePoolWithTag(NonPagedPoolNx, sizeof(EVENTDATA_CONTAINER), 'DBGE');
-	container->Data = Data;
+
+	container->CompletionStatus = &eventCompleted;
+	container->Data				= Data;
 
 	// Atomic list insert
 	ExInterlockedPushEntryList(&EventListHeader, &container->ListEntry, &EventListLock);
 
-	// Signals the mutex that an event has occurred
-	KeSetEvent(&DbgConsumeEventSignal, HIGH_PRIORITY, TRUE);
+	// Wait for the other thread to respond
+	//
+	// WARNING: This allows for context switches which
+	// *might* cause undefined behavior or a BSOD. The registers are
+	// OK, but the kernel stack isn't considered valid.
+	//
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!! THIS CAUSES KERNEL CODE TO EXECUTE IN A NON-VM STATE !!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	{
+		KeLowerIrql(PASSIVE_LEVEL);
 
-	// Wait for the other thread to respond, 
-	return KeWaitForSingleObject(&DbgResponseEventSignal, Executive, KernelMode, FALSE, nullptr);
+		// Spin
+		while (eventCompleted == FALSE)
+			YieldProcessor();
+
+		KeRaiseIrqlToDpcLevel();
+	}
+
+	return STATUS_SUCCESS;
 }
 
 VOID DbgInterceptContextSwap(ULONG_PTR CR3Value, PVIRT_CPU Cpu)

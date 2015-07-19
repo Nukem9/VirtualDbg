@@ -109,7 +109,8 @@ Global
 		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Debug|Win32.ActiveCfg = Debug|Win32
 		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Debug|Win32.Build.0 = Debug|Win32
-		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Debug|x64.ActiveCfg = Debug|Win32
+		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Debug|x64.ActiveCfg = Release|x64
+		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Debug|x64.Build.0 = Release|x64
 		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Release|Mixed Platforms.Build.0 = Release|Win32
 		{16EE237A-39AA-452A-BA10-121636CA63EE}.Win7 Release|Win32.ActiveCfg = Release|Win32

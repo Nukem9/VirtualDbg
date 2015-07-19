@@ -10,8 +10,8 @@ struct DbgEventData
 
 NTSTATUS DbgInit(ULONG ProcessId);
 NTSTATUS DbgClose();
-VOID DbgBeginWaitForEvent(DbgEventData **Data);
-VOID DbgEndWaitForEvent();
+BOOLEAN DbgWaitForEvent(DbgEventData **Data, volatile BOOLEAN **CompletionStatus);
+VOID DbgCompleteEvent(volatile BOOLEAN *CompletionStatus);
 NTSTATUS DbgSignalEvent(DbgEventData *Data);
 VOID DbgInterceptContextSwap(ULONG_PTR CR3Value, PVIRT_CPU Cpu);
 BOOLEAN DbgIsTargetProcess(ULONG_PTR CR3Value, ULONG_PTR EIPValue);

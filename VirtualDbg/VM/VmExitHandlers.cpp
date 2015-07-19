@@ -104,6 +104,16 @@ NTSTATUS NTAPI HandleException(PVIRT_CPU Cpu, ULONG InstructionLength)
 			// INT3
 			//
 			DbgLog("vmx: int3 rip = 0x%llx\n", Cpu->rip);
+			
+			if (Cpu->DebuggerActive)
+			{
+				DbgLog("vmx: dispatch\n");
+
+				DbgEventData myData;
+				myData.Handled = false;
+				myData.Cpu = Cpu;
+				DbgSignalEvent(&myData);
+			}
 
 			VmInjectInterrupt(INTERRUPT_SOFTWARE_EXCEPTION, VECTOR_BREAKPOINT_EXCEPTION, InstructionLength);
 			break;

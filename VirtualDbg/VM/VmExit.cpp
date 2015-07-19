@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "../Debugger/Debugger.h"
 
 VmExitCallback VmExitCallbacks[VMX_MAX_GUEST_VMEXIT] =
 {
@@ -82,6 +83,8 @@ VOID HandleVmExit(PVIRT_CPU Cpu, PGUEST_REGS GuestRegs)
 	//
 	Cpu->ExitReason			= __readvmx(VM_EXIT_REASON) & ~VMX_EXIT_REASONS_FAILED_VMENTRY;
 	size_t instructionLen	= __readvmx(VM_EXIT_INSTRUCTION_LEN);
+
+	DbgInterceptContextSwap(__readvmx(GUEST_CR3), Cpu);
 
 	VmExitCallbacks[Cpu->ExitReason](Cpu, (ULONG)instructionLen);
 
