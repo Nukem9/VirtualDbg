@@ -50,7 +50,18 @@ VOID VmStart(PVOID StartContext)
 	//
 	DbgLog("Virtualizing %d processors...\n", KeNumberProcessors);
 
-	KeIpiGenericCall(IpiStartVirtualization, 0);
+	for (ULONG i = 0; i < (ULONG)KeNumberProcessors; i++)
+	{
+		KAFFINITY OldAffinity = KeSetSystemAffinityThreadEx((KAFFINITY)(1 << i));
+
+		KIRQL OldIrql = KeRaiseIrqlToDpcLevel();
+
+		_StartVirtualization();
+
+		KeLowerIrql(OldIrql);
+
+		KeRevertToUserAffinityThreadEx(OldAffinity);
+	}
 
 	DbgLog("Done\n");
 
